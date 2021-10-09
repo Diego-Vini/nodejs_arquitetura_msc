@@ -1,35 +1,38 @@
+const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
 //Função que busca informações no banco
 async function getAll () {
-  const [books] = await connection.execute(
-    'SELECT * FROM books'
-  );
-
-  return books
+  return connection()
+  .then((db) => db.collection('books').find().toArray())
+  .then((books) => books.map((book) => book ))
 };
 
 //Função que busca por livros por id do autor
 async function getByAuthorId (id) {
-  const [booksId] = await connection.execute(
-    'SELECT * FROM books WHERE author_id = ?',
-    [id]
-  );
+  const booksData = await connection()
+  .then((db) => db.collection('books').find({author_id: Number(id)}).toArray());
+ 
+  if(!booksData) return null;
 
-  if(booksId.length === 0) return null;
-
-  return booksId;
+  return booksData;
 }
 
 async function findAuthorId (id) {
-  const [authorId] = await connection.execute(
-    'SELECT * FROM books WHERE id = ?',
-    [id]
-  );
 
-  if(authorId.length === 0) return null;
+  console.log(id)
+  if(!ObjectId.isValid(id)) return null;
 
-  return authorId;
+  const authorIdData = await connection()
+  .then((db) => db.collection('books').findOne(ObjectId(id)));
+
+  console.log(authorIdData)
+
+  if(!authorIdData) return null;
+
+  const { title, author_id } = authorIdData;
+
+  return { id, title, author_id};
 }
 
 const isValidTitle = async (title) => {

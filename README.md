@@ -6,6 +6,9 @@
   - Para aplicação de aprendizagem foi criado 2 arquivos: 01-model_example e 02-model-books;
   - Em ambos aplicou-se o conceito da camada model, fazendo a conexão com banco de dados mysql;
   - Foram adicionado rotas get para consultas e rota put para adicionar novos dados as tabelas;
+  - Adicionado outros 2 arquivos 03-model_mongdb e 04-books_mongodb;
+  - Em ambos aplicou-se o conceito da camada model, fazendo a conexão com banco de dados mongoDb;
+  - Foram adicionado rotas get para consultas e rota put para adicionar novos dados as tabelas;
   - Ao clonar:
     - Rodar o npm install para as dependencias;
     - Adicionar os scripts para criação do banco, tabelas e inclusão dos dados;

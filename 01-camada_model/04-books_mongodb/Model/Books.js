@@ -55,10 +55,8 @@ const isValidAuthor = async(author_id) => {
 }
 
 const createBooks = (title, author_id) => {
-  connection.execute(
-    'INSERT INTO books (title, author_id) Values(?, ?)',
-    [title, author_id]
-    );
+  connection()
+    .then((db) => db.collection('books').insertOne({title, author_id}));
 }
 
 module.exports = {

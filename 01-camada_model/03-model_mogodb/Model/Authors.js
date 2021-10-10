@@ -66,10 +66,9 @@ const isValid = (firstName, middleName, lastName) => {
 }
 
 const create = async(firstName, middleName, lastName) => {
-  connection.execute('INSERT INTO authors (first_name, middle_name, last_name)' 
-  + 'VALUES (?, ?, ?)',
-  [firstName, middleName, lastName]
-  )
+  connection()
+  .then((db) => db.collection('authors').insertOne({firstName, middleName, lastName}))
+  
 }
 
 module.exports = {

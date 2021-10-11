@@ -1,5 +1,6 @@
 const express = require ('express');
 const bodyParser = require('body-parser');
+const User = require('../Model/User')
 const { body, validationResult } = require ('express-validator');
 
 const app = express();
@@ -26,15 +27,28 @@ app.post('/user', [
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
       const messageErrors = errors.array()
-      console.log(messageErrors.map((r) => r))
-      return res.status(400).json({
+      const msgError = (messageErrors.map((r) => {
+        return {
           "error": true,
-          "message": messageErrors.map((r) => r.msg)
-        })
+          "message": r.msg,
+        }
+      }))
+      return res.status(400).json(msgError)
     }
     const { firstName, lastName, email, password} = req.body;
 
-    res.status(201).json({ message: 'Sucesso'})
+   const createUser = await User
+     .createUser(firstName, lastName, email, password)
+
+    res.status(201).json(createUser)
+});
+
+app.get('/users', async(_req, res) => {
+  const getAllUsers = await User.getAllUsers();
+
+  if (!getAllUsers) return res.status(401).json([])
+
+  res.status(200).json(getAllUsers)
 })
 
 const PORT = 3003;

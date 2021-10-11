@@ -49,6 +49,28 @@ app.get('/users', async(_req, res) => {
   if (!getAllUsers) return res.status(401).json([])
 
   res.status(200).json(getAllUsers)
+});
+
+app.get('/users/:id', async(req, res) => {
+
+  const { id } = req.params;
+  
+  const findId = await User.findById(id);
+
+  if(!findId) return res.status(404).json(
+    { 
+      error: true,
+      message: 'Usuário não encontrado'
+    }
+  );
+
+  res.status(201).json(findId);
+})
+
+app.put('/users/:id', async(req, res) => {
+  const { id } = req.params;
+
+  res.status(200).json({ message: "ok"})
 })
 
 const PORT = 3003;

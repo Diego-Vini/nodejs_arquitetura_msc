@@ -1,4 +1,3 @@
-const { Result } = require('express-validator');
 const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
@@ -29,7 +28,24 @@ const getAllUsers = async() => {
   ));
 }
 
+const findById = async(id) => {
+  const dataId = connection()
+    .then((db) => db.collection('users').findOne(ObjectId(id)))
+    .then((r) => ({
+      id: r._id,
+      firstNmae: r.firstName,
+      lastName: r.lastName,
+      email: r.email,
+    }))
+    .catch((err) => {
+      err.message
+    })
+
+    return dataId;
+}
+
 module.exports = { 
   createUser,
   getAllUsers,
+  findById,
 }

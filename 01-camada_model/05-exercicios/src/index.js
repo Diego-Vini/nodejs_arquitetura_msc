@@ -25,7 +25,12 @@ app.post('/user', [
   async(req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
-      return res.status(400).json( {errors: errors.array() })
+      const messageErrors = errors.array()
+      console.log(messageErrors.map((r) => r))
+      return res.status(400).json({
+          "error": true,
+          "message": messageErrors.map((r) => r.msg)
+        })
     }
     const { firstName, lastName, email, password} = req.body;
 

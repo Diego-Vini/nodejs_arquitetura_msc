@@ -67,9 +67,23 @@ const create = async (firstName, middleName, lastName) => {
     .then((result) => getNewAuthor({ id: result.insertedId, firstName, middleName, lastName}));
 }
 
+const findByName = async (firstName, middleName, lastName) => {
+  const query = middleName
+    ? {firstName, middleName, lastName}
+    : {firstName, lastName};
+
+    const author = connection()
+      .then((db) => db.collection('authors').findOne(query));
+
+    if (!author) return null;
+
+    return getNewAuthor(author);
+}
+
 module.exports = {
     getAll,
     findById,
     isValid,
     create,
+    findByName,
 }

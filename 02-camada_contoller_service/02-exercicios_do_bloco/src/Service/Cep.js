@@ -1,6 +1,6 @@
 const modelCep = require('../Model/Cep');
 
-const REGEXCEP = /^\d{5}-*\d{3}/;
+const REGEXCEP = /\d{5}-?\d{3}/;
 
 const findCepByCode = async(cep) => {
   if (!REGEXCEP.test(cep)) {
